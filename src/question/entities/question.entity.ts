@@ -20,6 +20,6 @@ export class Question {
   
   //user : id/username/email/[password/salt/role]/enteredRooms: room[](in each room)/solvedTasks : tasks[] /scoreNetwork/scoreWeb/scoreOther
   //room : id/type:enum["web" , "network"....]/name/description/tasks[]
-  //task : id / name / description / correct  / vmScriptName /questions[]
+  //task : id / name / description   / vmScriptName /questions[]
   //question : id /name / correct answer
 }

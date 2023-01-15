@@ -10,8 +10,7 @@ export class Task {
   name: string;
   @Column()
   description: string;
-  @Column()
-  vmScriptName: string;
+  
 
   @OneToMany(
     (type) => Question,
