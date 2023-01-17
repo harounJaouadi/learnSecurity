@@ -1,34 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { JwtAuthGuard } from 'src/user/guard/jwt-auth.guard';
 
 @Controller('room')
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 
-  @Post()
-  create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomService.create(createRoomDto);
-  }
+  @UseGuards(JwtAuthGuard)
+  @Get("test")//for test only
+  find(id:number){
+    return this.roomService.findRoomWithTaskId(1);
+  }  
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.roomService.findAll();
+  findAll(){
+    return this.roomService.findAllRooms() ; 
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roomService.findOne(+id);
+  @UseGuards(JwtAuthGuard)
+  @Get(":id")
+  findRoomById(@Param("id") id : number){
+    return this.roomService.findRoomById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomService.update(+id, updateRoomDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roomService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Get("scriptRoom/:id")
+  execScript(@Param("id") id:number){
+    return this.roomService.execScript(id);
   }
 }

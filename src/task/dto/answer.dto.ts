@@ -1,8 +1,8 @@
 import { IsNotEmpty } from "class-validator";
 
-export class CreadentialDto {
+export class AnswerDto{
     @IsNotEmpty()
-    username : string  ;
+    id : number ;
     @IsNotEmpty() 
-    password : string ; 
+    answer : string ; 
 }

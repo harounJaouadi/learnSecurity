@@ -1,5 +1,7 @@
 export enum roomTypeEnum{
-    GENERAL="general" ,
+    OTHER="other" ,
     NETWORK="network" ,
+    WEB="web",
+    
     
 }

@@ -21,12 +21,12 @@ export class Task {
     },
   )
   questions: Question[];
-
+  
 
   @ManyToOne(
     type => Room,
     (room: Room) =>room.tasks,
-    
+    // {eager :true}
   )
   room: Room;
   //user : id/username/email/[password/salt/role]/enteredRooms: room[](in each room)/solvedTasks : tasks[] /scoreNetwork/scoreWeb/scoreOther

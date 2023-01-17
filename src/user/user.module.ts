@@ -20,5 +20,6 @@ export const JWT_SECRET = 'harounSecretKey';
       signOptions: { expiresIn: 3600 },
     }),
   ],
+  exports :[UserService]
 })
 export class UserModule {}

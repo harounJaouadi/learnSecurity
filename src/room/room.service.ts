@@ -1,26 +1,57 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { exec } from 'child_process';
+import { TaskService } from 'src/task/task.service';
+import { Repository } from 'typeorm';
+// import { CreateRoomDto } from './dto/create-room.dto';
+// import { UpdateRoomDto } from './dto/update-room.dto';
+import { Room } from './entities/room.entity';
+import { PowerShell } from 'node-powershell';
+
 
 @Injectable()
 export class RoomService {
-  create(createRoomDto: CreateRoomDto) {
-    return 'This action adds a new room';
+  constructor(
+    @InjectRepository(Room)
+    private readonly roomRepository: Repository<Room>,
+  ) {}
+
+  async findRoomWithTaskId(id: number) {
+    const allRooms = await this.roomRepository.find();
+
+    for (const room of allRooms) {
+      const task = room.tasks.find((task) => task.id == id);
+      if (task) {
+        return room;
+      }
+    }
+    return null;
+  }
+  async findAllRooms() {
+    return this.roomRepository.find();
   }
 
-  findAll() {
-    return `This action returns all room`;
+  async findRoomById(id: number) {
+    return this.roomRepository.findOneBy({ id });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} room`;
-  }
+  async execScript(id: number) {
+    const room = await this.roomRepository.findOneBy({ id });
+    const scriptName = room.vmScriptName;
+    
 
-  update(id: number, updateRoomDto: UpdateRoomDto) {
-    return `This action updates a #${id} room`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} room`;
+    const poshInstance = async () => {
+      const ps = new PowerShell();
+
+      const command = PowerShell.command`cd src\\scripts ; ./${scriptName}.ps1`;
+      const output = await ps.invoke(command);
+      ps.dispose();
+      return output.raw ;
+    };
+
+    const ip=await poshInstance() ;
+    return ip
+    
   }
 }

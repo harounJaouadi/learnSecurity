@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 import { CreadentialDto } from './dto/credentialDto';
 import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { Req } from '@nestjs/common/decorators';
 
 @Controller('user')
 export class UserController {
@@ -23,32 +24,27 @@ export class UserController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  test(){
-    return {msg : "you have succeded"} ; 
+  test(@Req() req){
+    console.log(req)
+    return {msg : "you have succeded",user :req.user} ; 
   }
-  // @Post()
 
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.userService.create(createUserDto);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get("solvedTasks")
+  solvedTasks(@Req() req ){
+    return this.userService.findSolvedTasks(req.user.id);
+  }
 
-  // @Get()
-  // findAll() {
-  //   return this.userService.findAll();
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get("solvedRooms")
+  solvedRooms(@Req() req ){
+    return this.userService.findSolvedRooms(req.user.id);
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.userService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.userService.update(+id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get("visitedRooms")
+  visitedRooms(@Req() req ){
+    return this.userService.findVisitedRooms(req.user.id);
+  }
+  
 }

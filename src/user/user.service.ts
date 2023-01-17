@@ -13,7 +13,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<Partial<User>>,
-    private readonly jwtService :JwtService
+    private readonly jwtService: JwtService,
   ) {}
   async register(userData: CreateUserDto): Promise<Partial<User>> {
     const { username, password, email } = userData;
@@ -36,39 +36,44 @@ export class UserService {
       .createQueryBuilder('user')
       .where('user.username=:username or user.email=:username', { username })
       .getOne();
-      if(!user){
-        throw new NotFoundException("username or password incorrect") ; 
-      }
-      const hashedPassword = await bcrypt.hash(password,user.salt) ; 
-      
-      if(hashedPassword==user.password){
-        const payload={username : user.username , email : user.email , role:user.role}
-        const token=this.jwtService.sign(payload) ;
-        return {
-          token 
-        }
-      }else{
-        throw new NotFoundException("username or password incorrect"); 
-      }
+    if (!user) {
+      throw new NotFoundException('username or password incorrect');
+    }
+    const hashedPassword = await bcrypt.hash(password, user.salt);
+
+    if (hashedPassword == user.password) {
+      const payload = {
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      };
+      const token = this.jwtService.sign(payload);
+      return {
+        token,
+        user,
+      };
+    } else {
+      throw new NotFoundException('username or password incorrect');
+    }
+  }
+
+  async findUserById(id: number) {
+    return await this.userRepository.findOneBy({ id });
+  }
+  async updateUser(user: Partial<User>) {
+    return await this.userRepository.save(user);
+  }
+
+  async findSolvedTasks(id:number){
+    const theUser=await this.userRepository.findOneBy({id});
+    return theUser.solvedTasks ; 
   } ;
-
-  // create(createUserDto: CreateUserDto) {
-  //   return 'This action adds a new user';
-  // }
-
-  // findAll() {
-  //   return `This action returns all user`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`;
-  // }
-
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
+  async findVisitedRooms(id:number){
+    const theUser=await this.userRepository.findOneBy({id});
+    return theUser.visitedRooms ; 
+  } ;
+  async findSolvedRooms(id:number){
+    const theUser=await this.userRepository.findOneBy({id});
+    return theUser.solvedRooms; 
+  } ;
 }

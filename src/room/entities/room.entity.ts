@@ -7,7 +7,7 @@ export class Room {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'enum', enum: roomTypeEnum, default: roomTypeEnum.GENERAL })
+  @Column({ type: 'enum', enum: roomTypeEnum, default: roomTypeEnum.OTHER })
   type: string;
 
   @Column({ unique: true })
