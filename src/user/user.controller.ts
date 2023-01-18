@@ -16,6 +16,7 @@ export class UserController {
   register(@Body() userData : CreateUserDto):Promise<Partial<User>> {
     return this.userService.register(userData) ; 
   }
+  
   @Post("login")
   login(@Body() credential : CreadentialDto){
     return this.userService.login(credential) ;
