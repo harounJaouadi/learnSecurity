@@ -1,9 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { Body } from '@nestjs/common/decorators';
 import { AppService } from './app.service';
 import { CreateUserDto } from './user/dto/create-user.dto';
-import {exec} from "child_process" ; 
-
+import {exec} from "child_process" ;
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -12,6 +10,10 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  
+  
+  
 
 
 

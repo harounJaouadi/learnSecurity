@@ -26,24 +26,10 @@ export class TaskController {
     return this.taskService.checkResponse(id, answers ,request.user);
     // return this.taskService.findAll();
   }
-
-  // @Post()
-  // create(@Body() createTaskDto: CreateTaskDto) {
-  //   return this.taskService.create(createTaskDto);
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.taskService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-  //   return this.taskService.update(+id, updateTaskDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.taskService.remove(+id);
-  // }
+  
+  @UseGuards(JwtAuthGuard)
+  @Get(":id")
+  findTaskQuestion(@Param("id") id : number){
+    return this.taskService.questionByTaskId(id) ; 
+  }
 }

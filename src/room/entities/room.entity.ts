@@ -1,3 +1,4 @@
+import { classTypeEnum } from 'src/enum/classTypeEnum';
 import { roomTypeEnum } from 'src/enum/roomType.enum';
 import { Task } from 'src/task/entities/task.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
@@ -24,6 +25,12 @@ export class Room {
     onDelete: 'SET NULL', //when I delete a  task : id_task in the question will have a null value
   })
   tasks: Task[];
+
+  @Column({ type: 'enum', enum: classTypeEnum, default: classTypeEnum.one })
+  classe :string 
+
+  @Column({nullable : true})
+  imagePath :string ; 
 
   //user : id/username/email/[password/salt/role]/enteredRooms: room[](in each room)/solvedTasks : tasks[] /scoreNetwork/scoreWeb/scoreOther
   //room : id/type:enum["web" , "network"....]/name/vmScriptName/description/tasks[]

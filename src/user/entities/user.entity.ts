@@ -42,6 +42,9 @@ export class User {
   scoreNetwork: number;
   @Column({ default: 0 })
   scoreOther: number;
+
+  @Column({nullable:true})
+  profileImage :string ;
 }
 
 // {

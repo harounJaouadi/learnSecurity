@@ -51,7 +51,7 @@ export class RoomService {
     };
 
     const ip=await poshInstance() ;
-    return ip
+    return {ip}
     
   }
 }

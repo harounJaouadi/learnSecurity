@@ -74,4 +74,9 @@ export class TaskService {
     }
   }
 
+  async questionByTaskId(id :number){
+    const task=await this.taskRepository.findOneBy({id}) ; 
+    return task.questions ; 
+  }
+
 }

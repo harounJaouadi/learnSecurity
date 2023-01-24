@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { CreadentialDto } from './dto/credentialDto';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { JwtService } from '@nestjs/jwt/dist';
+import { join } from 'path';
 @Injectable()
 export class UserService {
   constructor(
@@ -57,11 +58,19 @@ export class UserService {
     }
   }
 
+  
+
+
   async findUserById(id: number) {
     return await this.userRepository.findOneBy({ id });
   }
+
   async updateUser(user: Partial<User>) {
+    if(user.password){
+      user.password=await bcrypt.hash(user.password, user.salt)
+    }
     return await this.userRepository.save(user);
+
   }
 
   async findSolvedTasks(id:number){
@@ -76,4 +85,16 @@ export class UserService {
     const theUser=await this.userRepository.findOneBy({id});
     return theUser.solvedRooms; 
   } ;
+
+  async uploadFile(filename : string,id :number){
+    const theUser=await this.userRepository.findOneBy({id});
+    theUser.profileImage=filename ; 
+    await this.userRepository.save(theUser) ; 
+    return {filename : filename}
+  }
+
+  async getProfileImage(id : number , res){
+    const theUser=await this.userRepository.findOneBy({id});
+    return res.sendFile(join(process.cwd(),"uploads/profileImage/"+theUser.profileImage)) ; 
+  }
 }

@@ -9,9 +9,9 @@ export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("test")//for test only
-  find(id:number){
-    return this.roomService.findRoomWithTaskId(1);
+  @Get("task/:id")//for test only
+  find(@Param("id") id:number){
+    return this.roomService.findRoomWithTaskId(id);
   }  
 
   @UseGuards(JwtAuthGuard)
@@ -31,4 +31,5 @@ export class RoomController {
   execScript(@Param("id") id:number){
     return this.roomService.execScript(id);
   }
+
 }
