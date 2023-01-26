@@ -52,7 +52,7 @@ export class TaskService {
             const type=room.type ;
             if(type=="web"){
               (updatedUser.scoreWeb)++ ;
-            }else if (type=="networdk"){
+            }else if (type=="network"){
               (updatedUser.scoreNetwork)++
             }else{
               (updatedUser.scoreOther)++

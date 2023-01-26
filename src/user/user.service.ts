@@ -65,10 +65,8 @@ export class UserService {
     return await this.userRepository.findOneBy({ id });
   }
 
-  async updateUser(user: Partial<User>) {
-    if(user.password){
-      user.password=await bcrypt.hash(user.password, user.salt)
-    }
+  async updateUser(user) {
+    
     return await this.userRepository.save(user);
 
   }
